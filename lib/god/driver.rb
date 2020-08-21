@@ -178,6 +178,17 @@ module God
       @thread = Thread.new do
         loop do
           begin
+            if @task.ancestor_driver
+              # если поток драйвера предка еще жив после обновления конфига, то он что-то заканчивает, надо ждать
+              if @task.ancestor_driver.thread.alive?
+                applog(@task, :info, "#{@task.name} prev watcher driver is still alive, skip events handling")
+                sleep(10)
+                next
+              else
+                @task.ancestor_driver = nil # ссылка на него больше не нужна, можно собирать мусор
+              end
+            end
+
             @events.pop.handle_event
           rescue ThreadError => e
             # queue is empty

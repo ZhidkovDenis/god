@@ -20,6 +20,8 @@ module God
     # Gets/Sets the Driver for this task.
     attr_accessor :driver
 
+    attr_accessor :ancestor_driver
+
     # Public: Sets whether the task should autostart when god starts. Defaults
     # to true (enabled).
     attr_writer :autostart

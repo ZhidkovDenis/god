@@ -302,6 +302,8 @@ module God
     if self.running && existing_watch
       self.pending_watch_states[existing_watch.name] = existing_watch.state
       self.unwatch(existing_watch)
+      # заполним драйвер текущего 
+      t.ancestor_driver = existing_watch.driver
     end
 
     # Ensure the new watch has a unique name.
